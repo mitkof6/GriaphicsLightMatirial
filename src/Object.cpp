@@ -33,16 +33,10 @@ void Object::loadObj(string filename, bool ccw){
 			sscanf(&line[1],"%d%d%d", &f1, &f2, &f3);
 			if (ccw){
 				triangles.push_back(
-						Triangle(
-								vertices[--f1],
-								vertices[--f3],
-								vertices[--f2]));
+						Triangle(vertices,--f1, --f3, --f2));
 			}else{
 				triangles.push_back(
-						Triangle(
-								vertices[--f1],
-								vertices[--f2],
-								vertices[--f3]));
+						Triangle(vertices,--f1, --f2, --f3));
 			}
 			break;
 		default:
@@ -81,26 +75,35 @@ void Object::draw(){
 	glPushMatrix();
 
 	glBegin(GL_TRIANGLES);
-		glColor3f(.5, .5, .5);
+		glColor3f(1.0, 1.0, 0.0);
 		for(unsigned i = 0;i<triangles.size();i++){
+			//normals[triangles[i].a].toString();
+			glNormal3f(
+					normals[triangles[i].a].x,
+					normals[triangles[i].a].y,
+					normals[triangles[i].a].z);
+			glVertex3f(
+					triangles[i].v0().x,
+					triangles[i].v0().y,
+					triangles[i].v0().z);
 
 			glNormal3f(
-					normals[i].x,
-					normals[i].y,
-					normals[i].z);
+					normals[triangles[i].b].x,
+					normals[triangles[i].b].y,
+					normals[triangles[i].b].z);
+			glVertex3f(
+					triangles[i].v1().x,
+					triangles[i].v1().y,
+					triangles[i].v1().z);
 
+			glNormal3f(
+					normals[triangles[i].c].x,
+					normals[triangles[i].c].y,
+					normals[triangles[i].c].z);
 			glVertex3f(
-					triangles[i].v0.x,
-					triangles[i].v0.y,
-					triangles[i].v0.z);
-			glVertex3f(
-					triangles[i].v1.x,
-					triangles[i].v1.y,
-					triangles[i].v1.z);
-			glVertex3f(
-					triangles[i].v2.x,
-					triangles[i].v2.y,
-					triangles[i].v2.z);
+					triangles[i].v2().x,
+					triangles[i].v2().y,
+					triangles[i].v2().z);
 
 
 
@@ -118,15 +121,15 @@ void Object::calculatePerVertexNormals(){
 		Vector3D accum(0, 0, 0);
 		for(unsigned j = 0;j<triangles.size();j++){
 			if(
-				vertices[i].equals(triangles[j].v0)||
-				vertices[i].equals(triangles[j].v1)||
-				vertices[i].equals(triangles[j].v2)){
+				vertices[i].equals(triangles[j].v0())||
+				vertices[i].equals(triangles[j].v1())||
+				vertices[i].equals(triangles[j].v2())){
 
 				accum = accum + triangles[j].n;
 
 			}
 		}
-		normals.push_back(accum.normalize());
+		normals.push_back(accum/120);
 	}
 
 }
