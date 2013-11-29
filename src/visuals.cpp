@@ -9,11 +9,12 @@
 
 Object mesh;
 
-GLfloat light_position1[] = { L1_X, L1_Y, L1_Z, 0.0 };
-GLfloat light_position2[] = { L2_X, L2_Y, L2_Z, 0.0 };
+GLfloat light_position1[] = { L1_X, L1_Y, L1_Z, 1.0 };
+GLfloat light_position2[] = { L2_X, L2_Y, L2_Z, 1.0 };
 
 float angle = 90;
 float lightAngle = 0;
+
 void Render(){
 	//CLEARS FRAME BUFFER ie COLOR BUFFER& DEPTH BUFFER (1.0)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -27,7 +28,8 @@ void Render(){
 
 	mesh.draw();
 
-	glTranslatef(-3*cos(lightAngle*PI/180.0), 0, -3*sin(lightAngle*PI/180.0));
+	glTranslatef(-3, 0 ,0);
+
 	glutSolidTeapot(1);
 
 	glutSwapBuffers();
@@ -51,16 +53,15 @@ void Resize(int w, int h){
 
 void Idle(){
 	// Light source movement
-	//angle+=0.1;
+	angle+=0.1;
 	lightAngle++;
 
-	light_position1[0] = L1_X*cos(lightAngle*PI/180.0);
-	light_position1[2] = L1_Z*sin(lightAngle*PI/180.0);
+	light_position1[0] = L1_X*sin(lightAngle*PI/180.0);
+	light_position1[2] = L1_Z*cos(lightAngle*PI/180.0);
 
-	light_position2[0] = L2_X*cos(lightAngle*PI/180.0);
-	light_position2[2] = L2_Z*sin(lightAngle*PI/180.0);
+	light_position2[0] = L2_X*sin(lightAngle*PI/180.0);
+	light_position2[2] = L2_Z*cos(lightAngle*PI/180.0);
 
-	//light_position2[] = { L2_X, L2_Y, L2_Z, 0.0 };
 
 	glLightfv( GL_LIGHT0, GL_POSITION, light_position1);
 	glLightfv( GL_LIGHT1, GL_POSITION, light_position2);
@@ -86,11 +87,11 @@ void Setup(){
 
 	// (06) // polygon rendering mode
 	glEnable(GL_COLOR_MATERIAL);
-	glColorMaterial( GL_FRONT, GL_AMBIENT_AND_DIFFUSE );
+	glColorMaterial( GL_FRONT, GL_AMBIENT || GL_DIFFUSE || GL_SPECULAR );
 
 
 
-	GLfloat ambientLight[] = { 0.3, 0.3, 0.3, 1.0 };
+	GLfloat ambientLight[] = { 0.2, 0.2, 0.2, 1.0 };
 	GLfloat diffuseLight[] = { 0.3, 0.3, 0.3, 1.0 };
 	GLfloat specularLight[] = { 1.0, 1.0, 1.0, 1.0 };
 
@@ -111,7 +112,7 @@ void Setup(){
 
 	//(06) Material Parameters
 	//(06a) for Gold
-	/*
+	//*
 	glLightfv( GL_LIGHT0, GL_SPECULAR, specularLight);
 	glLightfv( GL_LIGHT1, GL_SPECULAR, specularLight);
 	GLfloat specref[4];
@@ -121,7 +122,8 @@ void Setup(){
 	glMaterialfv(GL_FRONT,GL_DIFFUSE,specref);
 	specref[0] = 0.797; specref[1] = 0.724; specref[2] = 0.208; specref[3] = 1.0;
 	glMaterialfv(GL_FRONT,GL_SPECULAR,specref);
-	glMaterialf(GL_FRONT,GL_SHININESS,83.2);
+	//glMaterialf(GL_FRONT,GL_SHININESS,83.2);
+	glMaterialf(GL_FRONT,GL_SHININESS,128);
 	 //*/
 
 	//(06b) for Ruby
@@ -139,15 +141,15 @@ void Setup(){
 
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
-	//glEnable(GL_LIGHT1);
+	glEnable(GL_LIGHT1);
 
 	// (04)
 	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 	//glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 
 	//(03)
-	//glEnable(GL_CULL_FACE);
-	//glFrontFace(GL_CW);
+	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CW);
 	//glFrontFace(GL_CCW);
 
 

@@ -1,5 +1,5 @@
-#define L1_X 0.0
-#define L1_Y 200.0
+#define L1_X 50.0
+#define L1_Y 0.0
 #define L1_Z 50.0
 
 #define L2_X -L1_X
