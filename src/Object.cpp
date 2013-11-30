@@ -1,7 +1,28 @@
 #include "Object.h"
 #include <iostream>
 
-Object::Object() {
+Object::Object(int s,
+		float ax, float ay, float az, float aw,
+		float dx, float dy, float dz, float dw,
+		float sx, float sy, float sz, float sw) {
+
+	shininess = s;
+
+	ambient[0] = ax;
+	ambient[1] = ay;
+	ambient[2] = az;
+	ambient[3] = aw;
+
+	diffuse[0] = dx;
+	diffuse[1] = dy;
+	diffuse[2] = dz;
+	diffuse[3] = dw;
+
+	specular[0] = sx;
+	specular[1] = sy;
+	specular[2] = sz;
+	specular[3] = sw;
+
 
 }
 
@@ -58,25 +79,28 @@ void Object::loadObj(string filename, bool ccw){
 
 void Object::correctNormalsDirection(){
 
-	for(unsigned i = 0;i<triangles.size();i++){
-		Ray ray = Ray(
-				triangles[i].center+triangles[i].n*OFFSET,
-				triangles[i].n);
-		int counter = 0;
+	
+	Ray ray = Ray(
+		triangles[0].center+triangles[0].n*OFFSET,
+		triangles[0].n);
+	int counter = 0;
 
-		for(unsigned j = 0;j<triangles.size();j++){
-			if(i!=j){
-				if(triangles[j].intersect(ray)){
-					counter++;
-				}
+	for(unsigned j = 0;j<triangles.size();j++){
+		if(0!=j){
+			if(triangles[j].intersect(ray)){
+				counter++;
 			}
 		}
-
-		if(counter%2!=0){
-			//std::cout<<"Intersections: "<<counter<<"\n";
-			triangles[i].n = triangles[i].n*(-1);
-		}
 	}
+
+	if(counter%2!=0){
+		//std::cout<<"Intersections: "<<counter<<"\n";
+		//triangles[i].n = triangles[i].n*(-1);
+		glFrontFace(GL_CCW);
+	}else{
+		glFrontFace(GL_CW);
+	}
+	
 }
 
 void Object::draw(){
@@ -156,11 +180,7 @@ Vector3D Object::mapToSpherical(Vector3D v){
 }
 
 void Object::setColorFromSpherical(Vector3D v){
-
-	//std::cout<<0.5+v.y/(M_PI/2)<<"\n";
-
-
-	glColor3f(0.0, 0.5+v.y/(M_PI/2), .5+v.z/(2*M_PI));
+	glColor3f(1.0, 0.5+v.y/(M_PI/2), .5+v.z/(2*M_PI));
 }
 
 

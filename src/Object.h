@@ -14,6 +14,7 @@
 #include "GL/glut.h"
 
 #define OFFSET 10
+#define M_PI 3.14
 
 using namespace std;
 
