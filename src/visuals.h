@@ -11,7 +11,7 @@
 //#######################
 #define PATH "model.obj"
 #define FILL true
-#define COLOR_MAPING false
+#define COLOR_MAPING true
 #define DEFAULT_LIGHT false
 #define ROTATE false
 #define SMOOTH true

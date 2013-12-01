@@ -74,8 +74,8 @@ void updateMatirial(){
 
 	GLfloat specref[4];
 	specref[0] = 0.175;
-	specref[1] = 0.012*((sin(lightAngle*M_PI/360.0)+1)/2.0f);
-	specref[2] = 0.012*((cos(lightAngle*M_PI/360.0)+1)/2.0f);
+	specref[1] = 0.512*((sin(lightAngle*M_PI/360.0)+1)/2.0f);
+	specref[2] = 0.512*((cos(lightAngle*M_PI/360.0)+1)/2.0f);
 	specref[3] = 0.55;
 	glMaterialfv(GL_FRONT,GL_DIFFUSE,specref);
 
@@ -128,8 +128,9 @@ void Idle(){
 		rotationA+=0.1;
 	}
 	
+	lightAngle++;
+
 	if(!DEFAULT_LIGHT){
-		lightAngle++;
 		updateLightPosition();
 		updateLightIntensity();
 	}
@@ -178,8 +179,8 @@ void Setup(){
 		glLightfv( GL_LIGHT0, GL_DIFFUSE, diffuseLight );
 		glLightfv( GL_LIGHT0, GL_SPECULAR, specularLight);
 
-		glMaterialfv(GL_FRONT,GL_SPECULAR,specularLight);
-		glMaterialf(GL_FRONT,GL_SHININESS,76.8);
+		//glMaterialfv(GL_FRONT,GL_SPECULAR,specularLight);
+		//glMaterialf(GL_FRONT,GL_SHININESS,76.8);
 	}
 
 	glEnable(GL_LIGHTING);
