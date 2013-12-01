@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include <stdio.h>
-#include <math.h>
+#include <cmath>
 
 #include "Vector3D.h"
 #include "Triangle.h"
@@ -24,7 +24,7 @@ public:
 	virtual ~Object();
 
 	void loadObj(string filename, bool ccw);
-	void correctNormalsDirection();
+	void correctNormalDirection();
 	void calculatePerVertexNormals();
 
 	void draw();

@@ -6,8 +6,18 @@
 #define L2_Y -L1_Y
 #define L2_Z -L1_Z
 
-#define PI 3.14
+#define M_PI 3.14
 
+//#######################
+#define PATH "model.obj"
+#define FILL true
+#define COLOR_MAPING false
+#define DEFAULT_LIGHT false
+#define ROTATE false
+#define SMOOTH true
+//########################
+
+#include "GL/glut.h"
 
 //-------- Functions --------------------------------
 

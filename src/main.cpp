@@ -1,5 +1,6 @@
-#include "GL/glut.h"
 #include "visuals.h"
+#include "GL/glut.h"
+
 
 int main(int argc, char* argv[]){
 	// initialize GLUT library state

@@ -1,28 +1,7 @@
 #include "Object.h"
 #include <iostream>
 
-Object::Object(int s,
-		float ax, float ay, float az, float aw,
-		float dx, float dy, float dz, float dw,
-		float sx, float sy, float sz, float sw) {
-
-	shininess = s;
-
-	ambient[0] = ax;
-	ambient[1] = ay;
-	ambient[2] = az;
-	ambient[3] = aw;
-
-	diffuse[0] = dx;
-	diffuse[1] = dy;
-	diffuse[2] = dz;
-	diffuse[3] = dw;
-
-	specular[0] = sx;
-	specular[1] = sy;
-	specular[2] = sz;
-	specular[3] = sw;
-
+Object::Object() {
 
 }
 
@@ -77,30 +56,26 @@ void Object::loadObj(string filename, bool ccw){
 	fclose(objfile);
 }
 
-void Object::correctNormalsDirection(){
+void Object::correctNormalDirection(){
 
-	
 	Ray ray = Ray(
-		triangles[0].center+triangles[0].n*OFFSET,
+		triangles[0].v0(),
 		triangles[0].n);
+
 	int counter = 0;
 
 	for(unsigned j = 0;j<triangles.size();j++){
-		if(0!=j){
-			if(triangles[j].intersect(ray)){
-				counter++;
-			}
+		if(triangles[j].intersect(ray)){
+			counter++;
 		}
 	}
-
+	std::cout<<"Intersections: "<<counter<<"\n";
 	if(counter%2!=0){
-		//std::cout<<"Intersections: "<<counter<<"\n";
-		//triangles[i].n = triangles[i].n*(-1);
-		glFrontFace(GL_CCW);
-	}else{
-		glFrontFace(GL_CW);
+		//
+		for(unsigned j = 0;j<triangles.size();j++){
+			triangles[j].n = triangles[j].n*(-1);
+		}
 	}
-	
 }
 
 void Object::draw(){
@@ -180,7 +155,7 @@ Vector3D Object::mapToSpherical(Vector3D v){
 }
 
 void Object::setColorFromSpherical(Vector3D v){
-	glColor3f(1.0, 0.5+v.y/(M_PI/2), .5+v.z/(2*M_PI));
+	glColor3f(1.0, (v.y+M_PI/2)/(M_PI), (v.z+M_PI)/(2*M_PI));
 }
 
 
